@@ -74,11 +74,7 @@ export function HowItWorks() {
               </p>
 
               {/* Placeholder image */}
-              <div className="mt-6 aspect-[16/10] w-full max-w-xs overflow-hidden rounded-xl border border-border bg-muted/50">
-                <div className="flex h-full items-center justify-center">
-                  <p className="text-xs text-muted-foreground/60">{step.placeholder}</p>
-                </div>
-              </div>
+            
             </div>
           ))}
         </div>

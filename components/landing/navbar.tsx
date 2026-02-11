@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Coffee01Icon, Menu01Icon, Cancel01Icon } from "@hugeicons/core-free-icons"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 const navLinks = [
   { label: "Features", href: "#features" },
@@ -12,11 +13,12 @@ const navLinks = [
   { label: "Pricing", href: "#pricing" },
   { label: "FAQ", href: "#faq" },
 ]
-
-export function Navbar() {
+interface NavbarProps {
+  signUpUrl:string;
+}
+export  function Navbar({signUpUrl}:NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [scrolled, setScrolled] = React.useState(false)
-
   React.useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10)
@@ -60,12 +62,16 @@ export function Navbar() {
 
         {/* Desktop CTA */}
         <div className="hidden items-center gap-2 md:flex">
-          <Button variant="ghost" size="lg" render={<a href="#" />}>
-            Sign in
-          </Button>
-          <Button size="lg" render={<a href="#" />}>
-            Get Started
-          </Button>
+          <Link href="/login">
+            <Button variant="ghost" size="lg" >
+              Sign in
+            </Button>
+          </Link>
+          <Link href={signUpUrl}>
+            <Button size="lg">
+              Get Started
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile menu button */}
