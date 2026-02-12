@@ -3,7 +3,7 @@ import { Geist, Geist_Mono, Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import { AuthKitProvider } from "@workos-inc/authkit-nextjs/components";
 const nunitoSans = Nunito_Sans({variable:'--font-sans'});
-
+import { Toaster } from "sonner";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -31,6 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthKitProvider>{children}</AuthKitProvider>
+        <Toaster />
       </body>
     </html>
   );
