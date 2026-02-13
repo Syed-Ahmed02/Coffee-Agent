@@ -13,10 +13,8 @@ const navLinks = [
   { label: "Pricing", href: "#pricing" },
   { label: "FAQ", href: "#faq" },
 ]
-interface NavbarProps {
-  signUpUrl:string;
-}
-export  function Navbar({signUpUrl}:NavbarProps) {
+
+export  function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [scrolled, setScrolled] = React.useState(false)
   React.useEffect(() => {
@@ -67,7 +65,7 @@ export  function Navbar({signUpUrl}:NavbarProps) {
               Sign in
             </Button>
           </Link>
-          <Link href={signUpUrl}>
+          <Link href="/signup">
             <Button size="lg">
               Get Started
             </Button>

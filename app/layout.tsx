@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthKitProvider } from "@workos-inc/authkit-nextjs/components";
 const nunitoSans = Nunito_Sans({variable:'--font-sans'});
 import { Toaster } from "sonner";
+import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -30,7 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthKitProvider>{children}</AuthKitProvider>
+        <ConvexClientProvider>{children}</ConvexClientProvider>
         <Toaster />
       </body>
     </html>

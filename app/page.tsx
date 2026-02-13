@@ -6,25 +6,12 @@ import { Testimonials } from "@/components/landing/testimonials"
 import { Pricing } from "@/components/landing/pricing"
 import { FAQ } from "@/components/landing/faq"
 import { Footer } from "@/components/landing/footer"
-import {
-  getSignUpUrl,
-  withAuth,
-  signOut,
-} from '@workos-inc/authkit-nextjs';
-import Link from "next/link"
-import { redirect } from "next/navigation"
-export default async function Page() {
-  const { user } = await withAuth();
-	
-  // Get the URL to redirect the user to AuthKit to sign up
-  const signUpUrl = await getSignUpUrl();
 
-  if (user) {
-    redirect("/dashboard")
-  }
+export default async function Page() {
+	
   return (
     <div className="min-h-screen">
-      <Navbar signUpUrl={signUpUrl}/>
+      <Navbar/>
       <main>
         <Hero />
         <Features />
