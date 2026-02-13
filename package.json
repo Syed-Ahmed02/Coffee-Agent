@@ -11,6 +11,7 @@
   "dependencies": {
     "@base-ui/react": "^1.1.0",
     "@convex-dev/workos": "^0.0.1",
+    "@convex-dev/workos-authkit": "^0.1.6",
     "@hugeicons/core-free-icons": "^3.1.1",
     "@hugeicons/react": "^1.1.4",
     "@tanstack/react-form": "^1.28.0",
