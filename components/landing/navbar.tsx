@@ -3,9 +3,16 @@
 import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Coffee01Icon, Menu01Icon, Cancel01Icon } from "@hugeicons/core-free-icons"
+import { Coffee01Icon, Menu01Icon, Cancel01Icon, UserCircleIcon, Logout01Icon } from "@hugeicons/core-free-icons"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
+import { useAuth } from "@workos-inc/authkit-nextjs/components"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 const navLinks = [
   { label: "Features", href: "#features" },
@@ -14,9 +21,11 @@ const navLinks = [
   { label: "FAQ", href: "#faq" },
 ]
 
-export  function Navbar() {
+export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [scrolled, setScrolled] = React.useState(false)
+  const { user, loading, signOut } = useAuth()
+
   React.useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10)
@@ -60,16 +69,61 @@ export  function Navbar() {
 
         {/* Desktop CTA */}
         <div className="hidden items-center gap-2 md:flex">
-          <Link href="/login">
-            <Button variant="ghost" size="lg" >
-              Sign in
-            </Button>
-          </Link>
-          <Link href="/signup">
-            <Button size="lg">
-              Get Started
-            </Button>
-          </Link>
+          {loading ? (
+            <div className="h-9 w-20 animate-pulse rounded-md bg-muted" />
+          ) : user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Button variant="ghost" size="lg" className="gap-2">
+                  <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-sm font-medium text-primary">
+                    {user.profilePictureUrl ? (
+                      <img
+                        src={user.profilePictureUrl}
+                        alt=""
+                        className="size-8 rounded-full object-cover"
+                      />
+                    ) : (
+                      (user.firstName?.[0] ?? user.email?.[0] ?? "?").toUpperCase()
+                    )}
+                  </span>
+                  <span className="max-w-24 truncate text-left text-sm">
+                    {user.firstName ?? user.email?.split("@")[0] ?? "Account"}
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem>
+                  <Link href="/dashboard" className="flex items-center gap-2">
+                    <HugeiconsIcon icon={UserCircleIcon} strokeWidth={2} />
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  variant="destructive"
+                  onSelect={async (e) => {
+                    e.preventDefault()
+                    await signOut()
+                  }}
+                >
+                  <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} />
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button variant="ghost" size="lg">
+                  Sign in
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <Button size="lg">
+                  Get Started
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile menu button */}
@@ -102,12 +156,32 @@ export  function Navbar() {
               </a>
             ))}
             <div className="mt-2 flex flex-col gap-2 border-t border-border pt-4">
-              <Button variant="outline" size="lg" render={<a href="#" />}>
-                Sign in
-              </Button>
-              <Button size="lg" render={<a href="#" />}>
-                Get Started
-              </Button>
+              {user ? (
+                <>
+                  <Button variant="outline" size="lg" render={<Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} />}>
+                    Dashboard
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="destructive"
+                    onClick={async () => {
+                      setMobileMenuOpen(false)
+                      await signOut()
+                    }}
+                  >
+                    Sign out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="outline" size="lg" render={<Link href="/login" onClick={() => setMobileMenuOpen(false)} />}>
+                    Sign in
+                  </Button>
+                  <Button size="lg" render={<Link href="/signup" onClick={() => setMobileMenuOpen(false)} />}>
+                    Get Started
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>

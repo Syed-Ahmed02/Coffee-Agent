@@ -1,4 +1,4 @@
-import "./globals.css";
+import "../globals.css";
 import { AuthKitProvider } from "@workos-inc/authkit-nextjs/components";
 import { withAuth } from "@workos-inc/authkit-nextjs";
 import { redirect } from "next/navigation";
