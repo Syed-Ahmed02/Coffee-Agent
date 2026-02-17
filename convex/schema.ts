@@ -6,6 +6,8 @@ export default defineSchema({
     authId: v.string(),
     email: v.string(),
     name: v.string(),
-    onboarded: v.boolean(), 
+    onboarded: v.boolean(),
+    goals: v.optional(v.string()),
+    whatYouWant: v.optional(v.string()),
   }).index("authId", ["authId"]),
 });
