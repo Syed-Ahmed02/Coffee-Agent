@@ -15,6 +15,7 @@ export const { authKitEvent } = authKit.events({
       authId: event.data.id,
       email: event.data.email,
       name: `${event.data.firstName} ${event.data.lastName}`,
+      onboarded: false,
     });
   },
   "user.updated": async (ctx, event) => {
