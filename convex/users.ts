@@ -45,6 +45,8 @@ export const completeOnboarding = mutation({
     name: v.string(),
     goals: v.string(),
     whatYouWant: v.optional(v.string()),
+    peopleTypes: v.optional(v.array(v.string())),
+    industriesOrCompanies: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -58,6 +60,8 @@ export const completeOnboarding = mutation({
       name: args.name,
       goals: args.goals,
       whatYouWant: args.whatYouWant,
+      peopleTypes: args.peopleTypes,
+      industriesOrCompanies: args.industriesOrCompanies,
       onboarded: true,
     });
     return user._id;

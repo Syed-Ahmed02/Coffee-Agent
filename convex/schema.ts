@@ -9,5 +9,7 @@ export default defineSchema({
     onboarded: v.boolean(),
     goals: v.optional(v.string()),
     whatYouWant: v.optional(v.string()),
+    peopleTypes: v.optional(v.array(v.string())),
+    industriesOrCompanies: v.optional(v.string()),
   }).index("authId", ["authId"]),
 });

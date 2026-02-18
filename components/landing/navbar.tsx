@@ -164,9 +164,9 @@ export function Navbar() {
                   <Button
                     size="lg"
                     variant="destructive"
-                    onClick={async () => {
+                    onClick={() => {
                       setMobileMenuOpen(false)
-                      await signOut()
+                      void signOut()
                     }}
                   >
                     Sign out

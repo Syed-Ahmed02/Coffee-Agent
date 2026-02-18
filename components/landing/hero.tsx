@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { ArrowRight01Icon, SparklesIcon } from "@hugeicons/core-free-icons"
+import Link from "next/link"
 
 export function Hero() {
   return (
@@ -33,13 +33,19 @@ export function Hero() {
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
-              <Button size="lg" className="h-10 px-5 text-sm" render={<a href="#" />}>
+              <Link
+                href="/signup"
+                className="inline-flex h-10 items-center justify-center gap-1 rounded-md border border-transparent bg-primary px-5 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-4"
+              >
                 Get Started Free
                 <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} data-icon="inline-end" />
-              </Button>
-              <Button variant="outline" size="lg" className="h-10 px-5 text-sm" render={<a href="#how-it-works" />}>
+              </Link>
+              <Link
+                href="#how-it-works"
+                className="inline-flex h-10 items-center justify-center gap-1 rounded-md border border-border bg-transparent px-5 text-sm font-medium transition-colors hover:bg-input/50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:bg-input/30 [&_svg]:size-4"
+              >
                 See How It Works
-              </Button>
+              </Link>
             </div>
 
             <p className="text-xs text-muted-foreground">

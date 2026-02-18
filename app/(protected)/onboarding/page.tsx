@@ -18,17 +18,35 @@ import { api } from "@/convex/_generated/api";
 
 const STEPS = [
   {
-    title: "What should we call you?",
-    description: "We'll use this when we personalize your experience.",
+    title: "What's your name?",
+    description: "We'll use this to personalize your experience.",
   },
   {
     title: "What are your goals?",
-    description: "e.g. more coffee chats, stronger network, building relationships",
+    description: "e.g. more coffee chats, a stronger network, building relationships",
   },
   {
-    title: "What do you want to get from this app?",
-    description: "Optional — tell us what would make this valuable for you.",
+    title: "What would make this app valuable for you?",
+    description: "Optional.",
   },
+  {
+    title: "Who do you want to connect with?",
+    description: "Select all that apply.",
+  },
+  {
+    title: "Any industries or companies you're focusing on?",
+    description: "Optional — we'll tailor your experience.",
+  },
+] as const;
+
+const PEOPLE_TYPE_OPTIONS = [
+  "Recruiters",
+  "Professionals",
+  "Founders",
+  "Investors",
+  "Hiring managers",
+  "Mentors",
+  "Peers in my field",
 ] as const;
 
 const TOTAL_STEPS = STEPS.length;
@@ -42,6 +60,8 @@ export default function Onboarding() {
   const [name, setName] = useState("");
   const [goals, setGoals] = useState("");
   const [whatYouWant, setWhatYouWant] = useState("");
+  const [peopleTypes, setPeopleTypes] = useState<string[]>([]);
+  const [industriesOrCompanies, setIndustriesOrCompanies] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -82,6 +102,8 @@ export default function Onboarding() {
         name: name.trim(),
         goals: goals.trim(),
         whatYouWant: whatYouWant.trim() || undefined,
+        peopleTypes: peopleTypes.length > 0 ? peopleTypes : undefined,
+        industriesOrCompanies: industriesOrCompanies.trim() || undefined,
       });
       router.push("/dashboard");
     } catch (e) {
@@ -113,7 +135,7 @@ export default function Onboarding() {
         <CardContent className="space-y-4">
           {step === 0 && (
             <Field>
-              <FieldLabel htmlFor="name">Your name</FieldLabel>
+              <FieldLabel htmlFor="name">Name</FieldLabel>
               <Input
                 id="name"
                 value={name}
@@ -126,13 +148,13 @@ export default function Onboarding() {
           )}
           {step === 1 && (
             <Field>
-              <FieldLabel htmlFor="goals">Your goals</FieldLabel>
+              <FieldLabel htmlFor="goals">Goals</FieldLabel>
               <Textarea
                 id="goals"
                 value={goals}
                 onChange={(e) => setGoals(e.target.value)}
-                placeholder="e.g. Schedule 2 coffee chats per week, strengthen relationships with existing contacts..."
-                rows={4}
+                placeholder="e.g. Schedule 2 coffee chats per week, strengthen my network..."
+                rows={3}
                 autoFocus
               />
               {error && <FieldError>{error}</FieldError>}
@@ -140,13 +162,54 @@ export default function Onboarding() {
           )}
           {step === 2 && (
             <Field>
-              <FieldLabel htmlFor="whatYouWant">Your expectations</FieldLabel>
+              <FieldLabel htmlFor="whatYouWant">What would help you most?</FieldLabel>
               <Textarea
                 id="whatYouWant"
                 value={whatYouWant}
                 onChange={(e) => setWhatYouWant(e.target.value)}
-                placeholder="e.g. Track follow-ups, get reminders..."
-                rows={4}
+                placeholder="e.g. Reminders to follow up, tracking who I've met..."
+                rows={3}
+                autoFocus
+              />
+              {error && <FieldError>{error}</FieldError>}
+            </Field>
+          )}
+          {step === 3 && (
+            <Field>
+              <FieldLabel>Select the types of people you want to connect with</FieldLabel>
+              <div className="flex flex-wrap gap-2 pt-1">
+                {PEOPLE_TYPE_OPTIONS.map((option) => {
+                  const isSelected = peopleTypes.includes(option);
+                  return (
+                    <Button
+                      key={option}
+                      type="button"
+                      variant={isSelected ? "default" : "outline"}
+                      size="sm"
+                      className="h-auto py-2 px-3 text-xs"
+                      onClick={() => {
+                        setPeopleTypes((prev) =>
+                          isSelected ? prev.filter((p) => p !== option) : [...prev, option]
+                        );
+                      }}
+                    >
+                      {option}
+                    </Button>
+                  );
+                })}
+              </div>
+              {error && <FieldError>{error}</FieldError>}
+            </Field>
+          )}
+          {step === 4 && (
+            <Field>
+              <FieldLabel htmlFor="industriesOrCompanies">Industries or companies</FieldLabel>
+              <Textarea
+                id="industriesOrCompanies"
+                value={industriesOrCompanies}
+                onChange={(e) => setIndustriesOrCompanies(e.target.value)}
+                placeholder="e.g. Fintech, healthcare, early-stage startups..."
+                rows={3}
                 autoFocus
               />
               {error && <FieldError>{error}</FieldError>}
