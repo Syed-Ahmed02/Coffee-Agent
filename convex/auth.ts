@@ -10,14 +10,9 @@ export const authKit = new AuthKit<DataModel>(components.workOSAuthKit, {
 });
 
 export const { authKitEvent } = authKit.events({
-  "user.created": async (ctx, event) => {
-    await ctx.db.insert("users", {
-      authId: event.data.id,
-      email: event.data.email,
-      name: `${event.data.firstName} ${event.data.lastName}`,
-      onboarded: false,
-    });
-  },
+  // Users are created in the auth callback (onSuccess) — no webhook delay
+  "user.created": async () => {},
+
   "user.updated": async (ctx, event) => {
     const user = await ctx.db
       .query("users")

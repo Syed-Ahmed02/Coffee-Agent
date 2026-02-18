@@ -1,5 +1,14 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Environment variables
+
+For instant user creation after sign-up (without waiting for the WorkOS webhook), set:
+
+- **Next.js** (`.env.local`): `CALLBACK_CREATE_USER_SECRET` — a shared secret
+- **Convex**: Run `npx convex env set CALLBACK_CREATE_USER_SECRET <your-secret>` with the same value
+
+Generate a secret with: `openssl rand -hex 32`
+
 ## Getting Started
 
 First, run the development server:

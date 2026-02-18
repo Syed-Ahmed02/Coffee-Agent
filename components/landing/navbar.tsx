@@ -6,6 +6,7 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import { Coffee01Icon, Menu01Icon, Cancel01Icon, UserCircleIcon, Logout01Icon } from "@hugeicons/core-free-icons"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useAuth } from "@workos-inc/authkit-nextjs/components"
 import {
   DropdownMenu,
@@ -22,6 +23,7 @@ const navLinks = [
 ]
 
 export function Navbar() {
+  const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [scrolled, setScrolled] = React.useState(false)
   const { user, loading, signOut } = useAuth()
@@ -73,37 +75,41 @@ export function Navbar() {
             <div className="h-9 w-20 animate-pulse rounded-md bg-muted" />
           ) : user ? (
             <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button variant="ghost" size="lg" className="gap-2">
-                  <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-sm font-medium text-primary">
-                    {user.profilePictureUrl ? (
-                      <img
-                        src={user.profilePictureUrl}
-                        alt=""
-                        className="size-8 rounded-full object-cover"
-                      />
-                    ) : (
-                      (user.firstName?.[0] ?? user.email?.[0] ?? "?").toUpperCase()
-                    )}
-                  </span>
-                  <span className="max-w-24 truncate text-left text-sm">
-                    {user.firstName ?? user.email?.split("@")[0] ?? "Account"}
-                  </span>
-                </Button>
-              </DropdownMenuTrigger>
+              <DropdownMenuTrigger
+                render={
+                  <button
+                    type="button"
+                    className="inline-flex h-8 items-center justify-center gap-2 rounded-md px-2.5 text-xs/relaxed font-medium outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-3.5"
+                  >
+                    <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-sm font-medium text-primary">
+                      {user.profilePictureUrl ? (
+                        <img
+                          src={user.profilePictureUrl}
+                          alt=""
+                          className="size-8 rounded-full object-cover"
+                        />
+                      ) : (
+                        (user.firstName?.[0] ?? user.email?.[0] ?? "?").toUpperCase()
+                      )}
+                    </span>
+                    <span className="max-w-24 truncate text-left text-sm">
+                      {user.firstName ?? user.email?.split("@")[0] ?? "Account"}
+                    </span>
+                  </button>
+                }
+              />
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem>
-                  <Link href="/dashboard" className="flex items-center gap-2">
-                    <HugeiconsIcon icon={UserCircleIcon} strokeWidth={2} />
-                    Dashboard
-                  </Link>
+                <DropdownMenuItem
+                  onClick={() => router.push("/dashboard")}
+                  className="flex cursor-pointer items-center gap-2"
+                >
+                  <HugeiconsIcon icon={UserCircleIcon} strokeWidth={2} />
+                  Dashboard
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   variant="destructive"
-                  onSelect={async (e) => {
-                    e.preventDefault()
-                    await signOut()
-                  }}
+                  onClick={() => void signOut()}
+                  className="flex cursor-pointer items-center gap-2"
                 >
                   <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} />
                   Sign out
@@ -158,7 +164,14 @@ export function Navbar() {
             <div className="mt-2 flex flex-col gap-2 border-t border-border pt-4">
               {user ? (
                 <>
-                  <Button variant="outline" size="lg" render={<Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} />}>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                      router.push("/dashboard")
+                    }}
+                  >
                     Dashboard
                   </Button>
                   <Button
